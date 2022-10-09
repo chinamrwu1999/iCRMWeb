@@ -6,7 +6,7 @@ const searchText =""
 <template>
   <header>
      <div>
-      <img src="./assets/ams.png" style="height:1.5em;"/>
+      <img src="./assets/images/ams.png" style="height:1.5em;"/>
      </div>
      <div>
        <input type="text" name="searchText" :placeholder="searchText"/>
@@ -70,7 +70,7 @@ const searchText =""
 .main{
   display:flex;flex-flow:row nowrap;
   width:100%;height:calc(100% - 3.2em);
-
+  
 }
 .leftColumn {
   padding-top:3em;
@@ -79,7 +79,8 @@ const searchText =""
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  background-color: #4573d2;
+  /*background-color: #4573d2;*/
+  background: linear-gradient(#141e30, #243b55);
   color: white;
 }
 
