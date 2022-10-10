@@ -1,4 +1,6 @@
 @import "./base.css";
+@import "./form.css";
+@import "./list.css";
 
 
 
@@ -14,13 +16,11 @@ a,.green {
   
   transition: 0.4s;
 }
-
-@media (hover: hover) {
-  a:hover {
-    background-color:yellow;
-    color:black;
-  }
+a:hover {
+  background-color:yellow;
+  color:black;
 }
+
 
 
 * {
@@ -28,4 +28,5 @@ a,.green {
    --formBgColor:#000000;
    --formColor:#b5a988;
 }
+
 

@@ -1,0 +1,103 @@
+.form1 {
+    font-size: 1.2em;
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 2em;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    padding-bottom: 2em;
+    border-radius: 0.5em;
+    /* background-color:#0a1018;
+   background: linear-gradient(#0a1018, #243b55);
+    */
+    background: radial-gradient(#243b55, #0a1018);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .7);
+    border-radius: 10px;
+}
+
+.form1>header {
+    height: 4em;
+    padding-bottom: 1em;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    color: var(--formColor);
+    font-size: 1.3em;
+
+}
+
+.form1>header>span {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-bottom: solid 1px var(--formColor);
+}
+
+.form1>.fields {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.form1>.fields>.row {
+    width: 100%;
+    height: 3em;
+    color: var(--formColor);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.form1>.fileds>.row>.fieldLabel {
+    width: 10em;
+    text-align: right;
+    padding-right: 0.5em;
+
+    pointer-events: none;
+
+}
+
+.form1>.fileds>.row>.fieldLabel::after {
+    content: " :"
+}
+
+.form1>.fileds>.row>.field {
+    width: calc(100% - 10em);
+}
+
+.form1>.fileds>.row>.field>span {
+    font-size: 0.9em;
+}
+
+.form1>.fileds>.row>.field>* {
+    width: 100%;
+    margin-right: 0.8em;
+
+}
+
+.form1>.fileds>.row>.field>input[type='text'] {
+    outline: none;
+    border: none;
+    border-bottom: solid 1px gray;
+    max-width: 30em;
+    min-width: 20em;
+    height: 2em;
+    line-height: 2em;
+    font-size: 1.2em;
+    background-color: #172636;
+    color: var(--formColor);
+    caret-color: yellow;
+}
+
+.form1>.fileds>.fields>.buttons {
+    height: 5em;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-around;
+}

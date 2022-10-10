@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import User from '../components/User.vue'
 import CustomerMain  from '../components/customer/Customer.vue'
 import CustomerAdd from '../components/customer/CustomerAdd.vue'
+import CustomerList from "../components/customer/customerList.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,7 +26,13 @@ const router = createRouter({
       children:[{
          path: 'new',
          component:CustomerAdd
-      }]
+      },
+      {
+        path: "list",
+        component:CustomerList
+      }
+    
+    ]
     }
   ]
 })

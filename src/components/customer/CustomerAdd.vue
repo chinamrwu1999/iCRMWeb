@@ -57,6 +57,7 @@ onMounted(() => {
 </script>
 <template>
     <div class="main">
+        
         <div class="form1">
             <header><span>添加新客户(代理)</span></header>
             <div class="fields">
@@ -163,6 +164,7 @@ onMounted(() => {
                 <span></span>
             </div>
         </div>
+       
     </div>
 </template>
 <style scoped>
@@ -173,99 +175,15 @@ onMounted(() => {
     
 }
 
-.form1 {
-    font-size: 1.2em;
-    display: flex;   flex-flow: column nowrap;
-    margin: 2em;
-    position: absolute;
-    top: 35%;  left: 50%;
-    padding: 40px;
-    transform: translate(-50%, -50%);
-    padding-bottom: 2em;
-    border-radius: 0.5em;
-    /* background-color:#0a1018;
-   background: linear-gradient(#0a1018, #243b55);
-    */
-    background: radial-gradient(#243b55,#0a1018);
-    box-sizing: border-box;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, .7);
-    border-radius: 10px;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1.5s ease;
 }
 
-header {
-    height: 4em;
-    padding-bottom:1em;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: center;
-    color: var(--formColor);
-    font-size: 1.3em;
-    
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
-header > span {
-    padding-left: 0.5em; padding-right:0.5em;
-    border-bottom: solid 1px var(--formColor);
-}
-
-.fields {
-    width: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-.row {
-    width: 100%;
-    height: 3em;
-    color: var(--formColor);
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-}
-
-.fieldLabel {
-    width: 10em;
-    text-align: right;
-    padding-right: 0.5em;
-   
-  pointer-events: none;
- 
-}
-
-.fieldLabel::after {
-    content: " :"
-}
-
-.field {
-    width: calc(100% - 10em);
-} 
-.field > span{
-     font-size:0.9em;
-}
-.field> * {
-    width: 100%;
-    margin-right: 0.8em;
-    
-}
-
-.field>input[type='text'] {
-    outline: none;
-    border: none;
-    border-bottom: solid 1px gray;
-    max-width: 30em;
-    min-width: 20em;
-    height: 2em;
-    line-height: 2em;
-    font-size: 1.2em;
-    background-color:#0a1018;
-    color:var(--formColor);
-    caret-color: yellow;
-}
-
-.buttons{
-    height:5em; width: 100%;
-    display: flex;flex-flow:row nowrap;align-items: center; justify-content: space-around;
-}
 
 </style>

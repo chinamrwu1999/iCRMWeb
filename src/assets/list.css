@@ -1,0 +1,69 @@
+.list {
+    width: calc(100% - 2.2em);
+    height: calc(100% -2.2em);
+    display: flex;
+    flex-flow: column nowrap;
+    background: linear-gradient(#0a1018,#243b55);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .7);
+    border-radius: 0.5em;
+    margin: 1em;
+    padding:0;
+    color: var(--formColor);
+    font-size:16px;
+}
+
+.list>.header {
+    width: 100%;
+    height: 3em;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    border-bottom: solid 2px darkgray;
+    background-color: #223850;
+    padding-left:1em;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+
+}
+
+.list>.body {
+    height: 50em;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.list>.body>.row {
+    width: 100%;
+    height: 2.5em;
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    border-bottom: solid 1px gray;
+    padding-left:1em;
+}
+
+.list>.header>span {
+    text-align: left;
+    font-weight: bold;
+  
+}
+
+.list>.body>.row>span {
+    text-align: left;
+}
+
+.list > .error {
+    height:5em;width:30em;
+    background-color: white;color:red;
+    font-size:20px;
+    display:flex;flex-flow:column nowrap;align-items: center;justify-content: center;
+}
+
+.list > .loading {
+    height:5em;width:30em;
+    color:white;
+    font-size:20px;
+    display:flex;flex-flow:column nowrap;align-items: center;justify-content: center;
+}
