@@ -81,11 +81,11 @@ onMounted(() => {
 }
 
 .scale {
-     width: 5em;
+     width: 4em;
 }
 
 .level {
-     width: 5em;
+     width: 4em;
 }
 
 .province {
@@ -97,7 +97,7 @@ onMounted(() => {
 }
 
 .getway {
-     width: 5em;
+     width: 8em;
 }
 
 .address {
