@@ -1,15 +1,30 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 //import CommonService from "../../services/CommonService"
+import CustomerUpdater from "./CustomerUpdate.vue"
+import service from "./CustomerService"
 const models = ref(Array<any>())
 const errors = ref(null)
-
+const childWindow = ref('')
+const selected = ref(-1)
 onMounted(() => {
-     fetch("/customer/list").then(resp => resp.json()).then(json => { console.log(json); models.value = json }).catch(error => errors.value = error)
+     service.listCustomer().then(data =>
+      {
+          console.log(data)
+     models.value = data}
+     ).catch(error => errors.value = error)
 }
 
 )
 
+function showEdit(customerId: number) {
+     selected.value = customerId
+     console.log(selected.value)
+     childWindow.value = 'update'
+}
+function closeChild() {
+     childWindow.value = ''
+}
 </script>
 <template>
      <div class="list">
@@ -39,7 +54,7 @@ onMounted(() => {
                          <span class="getway">{{item.GetWay}}</span>
                          <span class="address">{{item.Address}}</span>
                          <span class="buttons">
-                              <button>编辑</button>
+                              <button @click="showEdit(item.ID)">编辑</button>
                               <button>详细</button>
                          </span>
                     </div>
@@ -58,11 +73,13 @@ onMounted(() => {
                     <span>data loading......</span>
                </div>
           </template>
-
-
      </div>
 
+     <Teleport to=".list" v-if="childWindow=='update'">
+          <CustomerUpdater :customer-id="selected" @close-window="closeChild()" />
+     </Teleport>
 </template>
+
 <style scoped>
 .index {
      width: 3em;
@@ -103,7 +120,8 @@ onMounted(() => {
 .address {
      width: 30em;
 }
-.row > .address {
-     font-size:0.9em;
+
+.row>.address {
+     font-size: 0.9em;
 }
 </style>

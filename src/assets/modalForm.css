@@ -1,18 +1,8 @@
 .modal {
-    width: 100%;
-    height: 100%;
-    position: absolute; top:6em;
-    text-align: center;
-    
-   /* background: linear-gradient(#141e30, #243b55);*/
-    
-}
-.form1 {
     font-size: 1.2em;
     display:inline-block;
     margin: 2em;
     position: absolute;
-    top: 35%;
     left: 50%;
     padding: 40px;
     transform: translate(-50%, -50%);
@@ -27,7 +17,7 @@
     border-radius: 10px;
 }
 
-.form1>header {
+.modal>header {
     height: 4em;
     padding-bottom: 1em;
     display: flex;
@@ -39,19 +29,19 @@
 
 }
 
-.form1>header>span {
+.modal>header>span {
     padding-left: 0.5em;
     padding-right: 0.5em;
     border-bottom: solid 1px var(--formColor);
 }
 
-.form1>.fields {
+.modal>.fields {
     width: 100%;
     display: flex;
     flex-flow: column nowrap;
 }
 
-.form1>.fields>.row {
+.modal>.fields>.row {
     width: 100%;
     height: 3em;
     color: var(--formColor);
@@ -60,7 +50,7 @@
     align-items: center;
 }
 
-.form1>.fields>.row>.fieldLabel {
+.modal>.fields>.row>.fieldLabel {
     width: 10em;
     text-align: right;
     padding-right: 0.5em;
@@ -69,27 +59,27 @@
 
 }
 
-.form1>.fields>.row>.fieldLabel::after {
+.modal>.fields>.row>.fieldLabel::after {
     content: " :"
 }
 
-.form1>.fields>.row>.field {
+.modal>.fields>.row>.field {
     width: calc(100% - 10em);
     text-align: left;
 }
 
-.form1>.fields>.row>.field>span {
+.modal>.fields>.row>.field>span {
     font-size: 0.9em;
     margin-right: 1em;
 }
 
-.form1>.fields>.row>.field>* {
+.modal>.fields>.row>.field>* {
     width: 100%;
    
 
 }
 
-.form1>.fields>.row>.field>input[type='text'] {
+.modal>.fields>.row>.field>input[type='text'] {
     outline: none;
     border: none;
     border-bottom: solid 1px gray;
@@ -103,7 +93,7 @@
     caret-color: yellow;
 }
 
-.form1>.fields>.buttons {
+.modal>.fields>.buttons {
     height: 5em;
     width: 100%;
     display: flex;

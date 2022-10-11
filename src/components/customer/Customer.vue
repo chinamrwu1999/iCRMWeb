@@ -12,8 +12,7 @@ function AddCustomer() {
 }
 
 onMounted(() => {
-    console.log("customer mounted")
-    router.push("/customer/list")
+     router.push("/customer/list")
 }
 
 )
