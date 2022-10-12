@@ -7,7 +7,6 @@ const route = useRoute()
 const searchTextKK = ""
 
 function AddCustomer() {
-    console.log("I am here!")
     router.push("/customer/new")
 }
 

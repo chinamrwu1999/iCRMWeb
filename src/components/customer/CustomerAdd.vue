@@ -4,8 +4,8 @@ import { onMounted } from 'vue'
 import CommonService from "../../services/CommonService"
 import service from "./CustomerService"
 const model = ref({
-    FullName: '河北明志康华生物科技有限公司',
-    ShortName: '明志康华',
+    FullName: '',
+    ShortName: '',
     CType: '',
     Scale: '',
     Status: '',
@@ -14,7 +14,7 @@ const model = ref({
     Nation: '',
     Province: '',
     City: '',
-    Address: '保定市竞秀区御风路保定大学科技园光阳园2A号楼2楼',
+    Address: '',
     Description: '',
 })
 const customerTypes = ref(Array<any>())
@@ -33,9 +33,6 @@ function fetchAllCodes() {
     }
 }
 function provinceChange(){
-     console.log("province select changed")
-     console.log(model.value.Province)
-
      CommonService.fetchChildCitys(model.value.Province).then(data => citys.value=data)
      model.value.City=''
 }

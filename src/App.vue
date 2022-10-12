@@ -44,10 +44,10 @@ const searchText =""
           </span>
         </div>
         
-        <RouterLink to="/customer">客户</RouterLink>
-        <RouterLink to="/">医院</RouterLink>
-        <RouterLink to="/">看板</RouterLink>
-        <RouterLink to="/">数据</RouterLink>
+        <RouterLink to="/customer">客户信息</RouterLink>
+        <RouterLink to="/hospital">医院信息</RouterLink>
+        <RouterLink to="/">数据看板</RouterLink>
+        <RouterLink to="/">基础数据</RouterLink>
         
       </div>
 
