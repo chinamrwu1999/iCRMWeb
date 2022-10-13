@@ -22,6 +22,13 @@ class CommonService {
             return http.get(`${this.baseURL}/city/${code}`).then(x => x.data)
       }
 
+      async POST(url: string): Promise<any> {
+            return http.post(`${this.baseURL}/${url}`).then(x => x.data)
+      }
+      async GET(url: string): Promise<any> {
+            return http.get(`${this.baseURL}/${url}`).then(x => x.data)
+      }
+
 }
 
 export default new CommonService

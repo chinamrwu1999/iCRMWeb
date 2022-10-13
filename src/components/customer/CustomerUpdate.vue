@@ -49,7 +49,7 @@ function provinceChange() {
 }
 
 function submit() {
-    service.save(model.value).then(x => console.log(x))
+    service.updateCustomer(model.value).then(x => console.log(x)).then
 }
 
 function initData() {
