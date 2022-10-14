@@ -67,3 +67,9 @@
     font-size:20px;
     display:flex;flex-flow:column nowrap;align-items: center;justify-content: center;
 }
+
+.list > .footer{
+    height:3em;width:100%;
+    display:flex;flex-flow:row nowrap;align-items: center;justify-content: space-between;
+    padding-left: 1em;padding-right:1em;
+}
