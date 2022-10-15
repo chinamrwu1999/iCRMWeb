@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
-import { onMounted, ref,provide} from "vue"
+import { useRouter } from 'vue-router'
+import { onMounted, ref,  computed, reactive } from "vue"
 import service from "./HospitalService"
 import CommonService from "../../services/CommonService"
 import HospitalUpdater from "./HospitalUpdate.vue"
 const router = useRouter()
-const route = useRoute()
 
-const search = ref({
-    code:Array<string>(),
-    txt:''
-})
 
+const search = {
+     Citys: '',
+     Txt: ''
+}
 
 const errors = ref(null)
 const childWindow = ref('')
 const selected = ref(-1)
-const pageData = ref({
+const pageData =  ref({
      pageSize: 0,
      page: 0,
      totalRows: 0,
@@ -25,18 +24,40 @@ const pageData = ref({
      sort: ''
 
 })
-const markets=ref(Array<any>())
-const areas=ref(Array<any>())
-const citys=ref(Array<any>())
-const error=ref("")
+const markets = ref(Array<any>())
+const provinces = ref(Array<any>())
+const citys = ref(Array<any>())
+const error = ref("")
+
+
+
+onMounted(() => {
+     CommonService.GET("market/areas").then(res => {
+          markets.value = res
+          // console.log(res)
+     }
+     ).catch(err => error.value = err)
+
+     // router.push("/hospital/list")
+
+     service.listHospitals().then(data => {
+          console.log(data)
+          pageData.value = data
+     }
+     ).catch(error => errors.value = error)
+
+}
+
+)
+/***************************************** */
 
 
 function AddHospital() {
-    console.log("I am hospital!")
-    router.push("/hospital/new")
+     console.log("I am hospital!")
+     router.push("/hospital/new")
 }
-function TestMe(){
-   service.Test().then(data => console.log(data))
+function TestMe() {
+     service.Test().then(data => console.log(data))
 }
 
 
@@ -48,78 +69,124 @@ function closeChild() {
      childWindow.value = ''
 }
 
-function changeMarket(e:any){
-     let selected=e.target.value
-     CommonService.GET(`market/provinces/${selected}`).then(res =>{
+function changeMarket(e: any) {
+     let selected = e.target.value
+     provinces.value = Array<any>()
+     if (selected != '') {
+          CommonService.GET(`market/provinces/${selected}`).then(res => {
+               console.log("Market changed")
+               provinces.value = res;//console.log(res)
+               let x: Array<string> = provinces.value.map(obj => obj.Code)
+               search.Citys = x.join(",")
+          }).then(() => {
+               service.queryHospital(search).then(res => {
+                    pageData.value = res;
+                    console.log(pageData.value)
+               })
+          })
+     } else {
+          service.listHospitals().then(data => {
+               pageData.value = data
+          }
+          ).catch(error => errors.value = error)
+     }
 
-        areas.value=res;//console.log(res)
-        let x=areas.value.map(obj=>obj.Code)
-         search.value.code=x
-       })
 }
 
-function changeArea(e:any){
-     let selected=e.target.value
-     CommonService.GET(`market/citys/${selected}`).then(res =>
-     {
-        citys.value=res;
-        let x=areas.value.map(obj=>obj.Code)
-        search.value.code=x
-        
+function changeProvince(e: any) {
+     let provinceId = e.target.value
+     CommonService.GET(`market/citys/${provinceId}`).then(res => {
+          citys.value = res;
+
+          let x: Array<string> = citys.value.map(obj => obj.Code)
+          x.push(provinceId)
+
+          search.Citys = x.join(",")
+     }).then(() => {
+          service.queryHospital(search).then(res => {
+               pageData.value = res;
+               // console.log(pageData.value)
+          })
      })
 }
 
-onMounted(() => {
-     CommonService.GET("market/areas").then(res => {
-        markets.value=res
-        console.log(res)
-     }
-     ).catch(err=>error.value=err)
 
-    // router.push("/hospital/list")
 
-    service.listHospitals().then(data => {
-          console.log(data)
-          pageData.value = data
-     }
-     ).catch(error => errors.value = error)
+
+function changeCity(e: any) {
+     let selected = e.target.value
+     console.log("city changed")
+     search.Citys = selected
+     service.queryHospital(search).then(res => {
+          pageData.value = res;
+          // console.log(pageData.value)
+     })
 
 }
 
+function getPageData(index: number) {
+     if (index < 0 || index > pageData.value.totalPages) return;
+     service.pageHospitals(20, index).then(res => {
+          pageData.value.rows = res.rows;
+          pageData.value.page = index;
+
+     }).catch(e1 => errors.value = e1)
+}
+
+const author = ref({
+  name: 'John Doe',
+  books: [
+    'Vue 2 - Advanced Guide',
+    'Vue 3 - Basic Guide',
+    'Vue 4 - The Mystery'
+  ]
+})
+
+const kk=computed( () =>{
+     return(author.value.name)
+}
+    
 )
+
+
 
 </script>
 <template>
-    <div class="main">
-        <header>
-            
-            <button @click="TestMe()">测试</button>
-            <div>
-                <select name="markets" @change="changeMarket($event)">
-                    <option value="-1">大区</option>
-                    <option :value="item.AreaId" v-for="item in markets">{{item.Name}}</option>
-                </select>
-                <select name="area" v-if="areas?.length>0" @change="changeArea($event)">
-                       <option value="">省市</option>
-                       <option :value="item.Code" v-for="item in areas">{{item.name}}</option>
-                </select>
-                <select name="area" v-if="citys?.length>0" @change="changeCitys($event)">
-                       <option :value="item.Code" v-for="item in areas">{{item.name}}</option>
-                </select>
-                <input type="text" v-model="search.txt" />
-                <button>查询</button>
-            </div>
-            <span>
-                <button @click="AddHospital()">添加医院</button>
-            </span>
-        </header>
-        <!-- div class="content">
+     <div class="main">
+          <header>
+
+               <button @click="TestMe()">测试</button>
+               <div>
+                    <select name="markets" @change="changeMarket($event)">
+                         <option value="-1">大区</option>
+                         <option :value="item.AreaId" v-for="item in markets">{{item.Name}}</option>
+                    </select>
+                    <template v-if="provinces?.length>0">
+                         <select name="area" @change="changeProvince($event)">
+                              <option value="">省市</option>
+                              <option :value="item.Code" v-for="item in provinces">{{item.Name}}</option>
+                         </select>
+                         <template v-if="citys?.length>0">
+                              <select name="area" @change="changeCity($event)">
+                                   <option value="">市/区</option>
+                                   <option :value="item.Code" v-for="item in citys">{{item.Name}}</option>
+                              </select>
+                         </template>
+                    </template>
+                    <input type="text" v-model="search.Txt" />
+                    <button>查询</button>
+               </div>
+               <span>
+                    <button @click="AddHospital()">添加医院</button>
+               </span>
+          </header>
+          <!-- div class="content">
             <RouterView />
         </div -->
-        
-    </div>
-    <div class="list">
-          <template v-if="pageData?.rows.length>0">
+
+     </div>
+     <div class="list">
+          <template v-if="pageData?.rows?.length>0">
                <div class="header">
                     <span class="index">序号</span>
                     <span class="name">医院名称</span>
@@ -132,7 +199,7 @@ onMounted(() => {
                </div>
                <div class="body">
                     <div class="row" v-for="item,index in pageData.rows">
-                         <span class="index">{{index+1}}</span>
+                         <span class="index">{{pageData.page*pageData.pageSize}}</span>
                          <span class="name">{{item.Name}}</span>
                          <span class="province">{{item.Province}}{{item.City}}</span>
                          <span class="ctype">{{item.HType}}</span>
@@ -145,9 +212,13 @@ onMounted(() => {
                     </div>
                </div>
                <div class="footer">
-                    <span><button>
-                              &#x3c;&#x3c;前一页
-                         </button></span>
+                    <span>
+                         <template v-if="pageData.page>0">
+                              <button @click="getPageData(pageData.page-1)">
+                                   &#x3c;&#x3c;前一页
+                              </button>
+                         </template>
+                    </span>
                     <span>
                          共有
                          <b style="padding-left: 1em;padding-right:1em;color:red">
@@ -161,9 +232,11 @@ onMounted(() => {
                          </b>页
                     </span>
                     <span>
-                         <button>
-                              下一页 &#x3e;&#x3e;
-                         </button>
+                         <template v-if="pageData.page < pageData.totalPages-1">
+                              <button @click="getPageData(pageData.page+1)">
+                                   下一页 &#x3e;&#x3e;
+                              </button>
+                         </template>
                     </span>
                </div>
           </template>
@@ -173,8 +246,8 @@ onMounted(() => {
                </div>
           </template>
           <template v-else>
-               <div class="loading">
-                    <span>data loading......</span>
+               <div class="loading" style="text-align:center;">
+                    <span>Sorry,没有找到数据哦.....</span>
                </div>
           </template>
      </div>
@@ -184,41 +257,37 @@ onMounted(() => {
 </template>
 <style scoped>
 .main {
-    width: 100%;
-    height: 3em;
-    padding: 0.2em;
-    display: flex;
-    flex-flow: column nowrap;
-    border-top:solid 1px #141e30 ;
+     width: 100%;
+     height: 3em;
+     padding: 0.2em;
+     display: flex;
+     flex-flow: column nowrap;
+     border-top: solid 1px #141e30;
 }
 
 header {
-    height: 2.5em;
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;   align-items: center; justify-content: space-between;
-  
-    padding-left: 1em;
-    padding-right:1em;
+     height: 2.5em;
+     width: 100%;
+     display: flex;
+     flex-flow: row nowrap;
+     align-items: center;
+     justify-content: space-between;
+
+     padding-left: 1em;
+     padding-right: 1em;
 
 }
-
-.content {
-    width: 100%;
-    height: calc(100% - 2.8em);
-}
-
 .index {
      width: 3em;
 }
 
 .name {
-     width: 45em;
+     width: 35%;
 }
 
 
 .ctype {
-     width: 10em;
+     width: 8em;
 }
 
 
@@ -227,10 +296,10 @@ header {
 }
 
 .province {
-     width: 15em;
+     width: 20%;
 }
 
-.buttons{
-     display:flex;flex-flow:row nowrap;align-items: center; text-align: right;
+.buttons {
+     text-align: right;
 }
 </style>
