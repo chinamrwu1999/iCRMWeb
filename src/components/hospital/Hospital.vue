@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { onMounted, ref,  computed, reactive } from "vue"
+import { onMounted, ref, computed, reactive } from "vue"
 import service from "./HospitalService"
 import CommonService from "../../services/CommonService"
 import HospitalUpdater from "./HospitalUpdate.vue"
@@ -15,9 +15,10 @@ const search = {
 const errors = ref(null)
 const childWindow = ref('')
 const selected = ref(-1)
-const pageData =  ref({
+const pageData = ref({
      pageSize: 0,
      page: 0,
+     startIndex:0,
      totalRows: 0,
      totalPages: 0,
      rows: Array<any>(),
@@ -40,7 +41,7 @@ onMounted(() => {
 
      // router.push("/hospital/list")
 
-     service.listHospitals().then(data => {
+     service.queryHospitals(null).then(data => {
           console.log(data)
           pageData.value = data
      }
@@ -53,7 +54,7 @@ onMounted(() => {
 
 
 function AddHospital() {
-     console.log("I am hospital!")
+
      router.push("/hospital/new")
 }
 function TestMe() {
@@ -72,84 +73,80 @@ function closeChild() {
 function changeMarket(e: any) {
      let selected = e.target.value
      provinces.value = Array<any>()
-     if (selected != '') {
+    
+     if (selected) {
           CommonService.GET(`market/provinces/${selected}`).then(res => {
-               console.log("Market changed")
-               provinces.value = res;//console.log(res)
-               let x: Array<string> = provinces.value.map(obj => obj.Code)
-               search.Citys = x.join(",")
+               if (res) {
+                    provinces.value = res;//console.log(res)
+                    let x: Array<string> = provinces.value.map(obj => obj.Code)
+                    search.Citys = x.join(",")
+               }
+
           }).then(() => {
-               service.queryHospital(search).then(res => {
+               service.queryHospitals(search).then(res => {
                     pageData.value = res;
-                    console.log(pageData.value)
+
                })
           })
      } else {
-          service.listHospitals().then(data => {
-               pageData.value = data
-          }
-          ).catch(error => errors.value = error)
+          search.Citys = ''
+          search.Txt = ''
+          service.queryHospitals(search).then(res => {
+
+               pageData.value = res;
+               provinces.value = Array<string>()
+               citys.value = Array<string>()
+          })
      }
+
 
 }
 
 function changeProvince(e: any) {
      let provinceId = e.target.value
-     CommonService.GET(`market/citys/${provinceId}`).then(res => {
-          citys.value = res;
+     if (provinceId != '') {
+          CommonService.GET(`market/citys/${provinceId}`).then(res => {
+               citys.value = res;
+               let x: Array<string> = citys.value.map(obj => obj.Code)
+               x.push(provinceId)
 
-          let x: Array<string> = citys.value.map(obj => obj.Code)
-          x.push(provinceId)
-
-          search.Citys = x.join(",")
-     }).then(() => {
-          service.queryHospital(search).then(res => {
+               search.Citys = x.join(",")
+          }).then(() => {
+               service.queryHospitals(search).then(res => {
                pageData.value = res;
-               // console.log(pageData.value)
+                    // console.log(pageData.value)
+               })
           })
-     })
+     } else {
+          citys.value = Array<string>()
+     }
+
 }
-
-
-
 
 function changeCity(e: any) {
      let selected = e.target.value
-     console.log("city changed")
      search.Citys = selected
-     service.queryHospital(search).then(res => {
+     service.queryHospitals(search).then(res => {
           pageData.value = res;
-          // console.log(pageData.value)
      })
 
 }
 
 function getPageData(index: number) {
      if (index < 0 || index > pageData.value.totalPages) return;
-     service.pageHospitals(20, index).then(res => {
+     service.pageHospitals(search,20, index).then(res => {
           pageData.value.rows = res.rows;
           pageData.value.page = index;
-
+          pageData.value.startIndex=res.startIndex
+          
      }).catch(e1 => errors.value = e1)
 }
-
-const author = ref({
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-})
-
-const kk=computed( () =>{
-     return(author.value.name)
+function LikeName() {
+     search.Citys = ''
+     service.queryHospitals(search).then(res => {
+            pageData.value = res
+     })
 }
-    
-)
-
-
-
 </script>
 <template>
      <div class="main">
@@ -158,7 +155,7 @@ const kk=computed( () =>{
                <button @click="TestMe()">测试</button>
                <div>
                     <select name="markets" @change="changeMarket($event)">
-                         <option value="-1">大区</option>
+                         <option value="">大区</option>
                          <option :value="item.AreaId" v-for="item in markets">{{item.Name}}</option>
                     </select>
                     <template v-if="provinces?.length>0">
@@ -174,7 +171,7 @@ const kk=computed( () =>{
                          </template>
                     </template>
                     <input type="text" v-model="search.Txt" />
-                    <button>查询</button>
+                    <button @click="LikeName()">查询</button>
                </div>
                <span>
                     <button @click="AddHospital()">添加医院</button>
@@ -199,7 +196,7 @@ const kk=computed( () =>{
                </div>
                <div class="body">
                     <div class="row" v-for="item,index in pageData.rows">
-                         <span class="index">{{pageData.page*pageData.pageSize}}</span>
+                         <span class="index">{{pageData.startIndex+index+1}}</span>
                          <span class="name">{{item.Name}}</span>
                          <span class="province">{{item.Province}}{{item.City}}</span>
                          <span class="ctype">{{item.HType}}</span>
@@ -277,6 +274,7 @@ header {
      padding-right: 1em;
 
 }
+
 .index {
      width: 3em;
 }
