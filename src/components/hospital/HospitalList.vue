@@ -21,7 +21,10 @@ const pageData = ref({
 
 
 onMounted(() => {
-     service.listHospitals().then(data => {
+     service.queryHospitals({
+      Citys:'',
+      Txt:''    
+     }).then(data => {
           console.log(data)
           pageData.value = data
      }
