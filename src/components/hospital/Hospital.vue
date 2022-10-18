@@ -149,7 +149,7 @@ function LikeName() {
 }
 </script>
 <template>
-     <div class="main">
+     <div class="main1">
           <header>
 
                <button @click="TestMe()">测试</button>
@@ -253,7 +253,7 @@ function LikeName() {
      </Teleport>
 </template>
 <style scoped>
-.main {
+.main1 {
      width: 100%;
      height: 3em;
      padding: 0.2em;

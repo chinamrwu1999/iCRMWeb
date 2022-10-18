@@ -5,6 +5,7 @@ import CustomerMain  from '../components/customer/Customer.vue'
 import CustomerAdd from '../components/customer/CustomerAdd.vue'
 import CustomerList from "../components/customer/customerList.vue"
 import HospitalMain from "../components/hospital/Hospital.vue"
+import Login from "../components/user/Login.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,6 +15,12 @@ const router = createRouter({
       component: HomeView
     },
     
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+
     {
       path:'/user',
       name:'user',
