@@ -73,7 +73,7 @@ function closeChild() {
 function changeMarket(e: any) {
      let selected = e.target.value
      provinces.value = Array<any>()
-    
+     search.Txt=''
      if (selected) {
           CommonService.GET(`market/provinces/${selected}`).then(res => {
                if (res) {
@@ -104,6 +104,7 @@ function changeMarket(e: any) {
 
 function changeProvince(e: any) {
      let provinceId = e.target.value
+     search.Txt=''
      if (provinceId != '') {
           CommonService.GET(`market/citys/${provinceId}`).then(res => {
                citys.value = res;
@@ -124,6 +125,7 @@ function changeProvince(e: any) {
 }
 
 function changeCity(e: any) {
+     search.Txt=''
      let selected = e.target.value
      search.Citys = selected
      service.queryHospitals(search).then(res => {

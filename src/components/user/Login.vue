@@ -37,6 +37,9 @@
 }
 </style>
 <script setup lang="ts">
+import  user from "../../services/Authentication"
+import http from "../../services/HttpClient"
+
 var model = {
     UserId: '',
     Password: ''
@@ -44,7 +47,7 @@ var model = {
 
 /****************************** */
 function submit() {
-
+    //http.po
 }
 /****************************** */
 function exit() {
