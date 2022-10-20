@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
-import Navigator from "./components/Navigator.vue"
-import Login from "./components/user/Login.vue"
 
 const searchText = ""
 const UserInf = ref(false)

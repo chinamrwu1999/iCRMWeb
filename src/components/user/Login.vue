@@ -37,9 +37,7 @@
 }
 </style>
 <script setup lang="ts">
-import  user from "../../services/Authentication"
-import http from "../../services/HttpClient"
-
+import Auth from "../../services/Authentication"
 var model = {
     UserId: '',
     Password: ''

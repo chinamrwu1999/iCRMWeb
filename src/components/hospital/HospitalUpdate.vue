@@ -45,7 +45,7 @@ function initData() {
        
         model.value = res
         province.value=model.value.Code.substring(0,2)+"0000"
-        console.log(province.value)
+       // console.log(province.value)
         CommonService.fetchChildCitys(province.value).then(x => {
             citys.value=x;
         })

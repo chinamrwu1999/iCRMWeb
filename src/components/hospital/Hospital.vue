@@ -42,7 +42,7 @@ onMounted(() => {
      // router.push("/hospital/list")
 
      service.queryHospitals(null).then(data => {
-          console.log(data)
+         // console.log(data)
           pageData.value = data
      }
      ).catch(error => errors.value = error)

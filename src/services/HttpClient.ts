@@ -1,5 +1,6 @@
 import axios from 'axios'
-
+import Auth from "../services/Authentication"
+import router from "../router/index"
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
@@ -11,8 +12,13 @@ const service = axios.create({
 })
 // request拦截器
 service.interceptors.request.use(config => {
-  
-  console.log("I intercept you")
+   console.log("intercepting ....")
+   console.log(Auth.isAuthenticated())
+  if (!Auth.isAuthenticated() && ! config.url?.startsWith("/login")){
+      console.log("没有授权————You need login before using this model， ")
+      // router.push("/login")
+      
+  }
   return config
 }, error => {
     // console.log(error)
