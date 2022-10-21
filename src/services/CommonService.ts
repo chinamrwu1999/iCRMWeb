@@ -35,13 +35,14 @@ class CommonService {
                   method: 'post',
                   data: payload
                 })
-                .then(x => {
-                  console.log(x)
-                  console.log(x.data)
-                }
-                  )
+                .then(x => x.data)
       }
-            
+     
+      UserLogin(obj:any):Promise<any>{
+
+            return http.post(`${this.baseURL}/login`,obj)
+      }
+      
       
 
 }

@@ -5,7 +5,6 @@ import CustomerAdd from '../components/customer/CustomerAdd.vue'
 import CustomerList from "../components/customer/customerList.vue"
 import HospitalMain from "../components/hospital/Hospital.vue"
 import LoginForm from "../components/user/Login.vue"
-import { nextTick } from 'vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -46,12 +45,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("iCRMToken")
+  const token = localStorage.getItem("AMSTOKEN")
+  console.log("beforeEach is calling")
   if (to.name !== 'login' && !token) { // 无token，登录从服务器获取token
-    next({ // 有token
-      path: 'login',
-      // replace: true
-    })
+    next({  path: 'login'})
   } else { //有token
     if (token && to.name === 'login') { next({ name: 'home' }) }
     else { next() }

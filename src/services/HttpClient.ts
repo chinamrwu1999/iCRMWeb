@@ -1,6 +1,4 @@
 import axios from 'axios'
-import Auth from "../services/Authentication"
-import router from "../router/index"
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
@@ -12,28 +10,22 @@ const service = axios.create({
 })
 // request拦截器
 service.interceptors.request.use(config => {
-   console.log("intercepting ....")
-   console.log(Auth.isAuthenticated())
-  if (!Auth.isAuthenticated() && ! config.url?.startsWith("/login")){
-      console.log("没有授权————You need login before using this model， ")
-      // router.push("/login")
-      
-  }
+  if(config?.headers?.["token"]){
+    config.headers["token"] = localStorage.getItem("AMSTOKEN")
+  } 
   return config
 }, error => {
-    // console.log(error)
-    
-    Promise.reject(error)
+   Promise.reject(error)
 })
 
 // 响应拦截器
 service.interceptors.response.use(res => {
-    // 未设置状态码则默认成功状态
-    const code = res.data.code || 200;
-    console.log()
-  
-    return res
-  },
+  // 未设置状态码则默认成功状态
+  const code = res.data.code || 200;
+  console.log()
+
+  return res
+},
   error => {
     // console.log('err' + error)
     let { message } = error;
@@ -46,7 +38,7 @@ service.interceptors.response.use(res => {
     else if (message.includes("Request failed with status code")) {
       message = "系统接口" + message.substr(message.length - 3) + "异常";
     }
-   
+
     return Promise.reject(error)
   }
 )

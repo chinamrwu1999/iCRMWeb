@@ -1,15 +1,8 @@
 
 
- class User{
-    Name : string=''
-    UserId : string=''
-    Role : string=''
-    constructor(){ }
+ 
     
-    isAuthenticated(){
-        return this.Name!='' && this.UserId!=''
+ export function   isAuthenticated(){
+        let obj=localStorage.getItem("amsToken")
+    
     }
-
-}
-const user=new User()
-export default user

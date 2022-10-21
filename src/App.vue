@@ -3,8 +3,6 @@ import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 
 const searchText = ""
-const UserInf = ref(false)
-
 </script>
 
 <template>
