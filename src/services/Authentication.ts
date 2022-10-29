@@ -1,8 +1,7 @@
 
 
- 
-    
- export function   isAuthenticated(){
-        let obj=localStorage.getItem("amsToken")
-    
-    }
+
+
+export function isAuthenticated() {
+    let obj = localStorage.getItem("amsToken")
+}

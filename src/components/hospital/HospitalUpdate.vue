@@ -64,7 +64,9 @@ onMounted(() => {
 
 <template>
     <div class="modal">
+        
         <div class="form1">
+            
             <header><span>修改医院信息</span></header>
             <div class="fields">
                 <div class="row">
@@ -120,14 +122,12 @@ onMounted(() => {
                 <span></span>
                 <span></span>
                 <button @click="submit()">提交</button>
-                <button @click='$emit("closeWindow")'>关闭</button>
+                <button class="closeButton" @click='$emit("closeWindow")'>关闭</button>
                 <span></span>
                 <span></span>
             </div>
+            
         </div>
 
     </div>
 </template>
-<style scoped>
-
-</style>

@@ -6,24 +6,22 @@ const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
   baseURL: "/iCRM",
   // 超时
+  headers:{},
   timeout: 1000000
 })
 // request拦截器
-service.interceptors.request.use(config => {
-  if(config?.headers?.["token"]){
-    config.headers["token"] = localStorage.getItem("AMSTOKEN")
-  } 
-  return config
-}, error => {
-   Promise.reject(error)
+service.interceptors.request.use((config) => {
+  if (!config?.headers) {
+      throw new Error(`Expected 'config' and 'config.headers' not to be undefined`);
+  }
+  config.headers.token= localStorage.getItem('AMSTOKEN');
+  //console.log(config.headers)
+  return config;
 })
+
 
 // 响应拦截器
 service.interceptors.response.use(res => {
-  // 未设置状态码则默认成功状态
-  const code = res.data.code || 200;
-  console.log()
-
   return res
 },
   error => {

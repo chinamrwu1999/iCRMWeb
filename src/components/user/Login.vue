@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import service from "../../services/CommonService"
 import router from "../../router"
+
 var model = {
-    UserId: '15010040',
+    UserId: '15010183',
     Password: '123456'
 }
 
@@ -13,12 +14,14 @@ function submit() {
     service.UserLogin(model).then(response => {
        // console.log(response)
         let token=response.headers.token
+        
+       // console.log(token)
         localStorage.setItem("AMSTOKEN",token)
+        //console.log
         return(response.data)
     }
     ).then(x =>{
          if(x?.ID){
-            console.log("login successfully")
             localStorage.setItem("userId",x)
             router.push("/")
          }

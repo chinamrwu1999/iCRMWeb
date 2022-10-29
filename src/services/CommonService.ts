@@ -10,6 +10,16 @@ class CommonService {
 
       }
 
+      /* 获取用户权限的顶级区域 */
+      async listTopAreas(): Promise<any> {
+            return http.get(`${this.baseURL}/topcity`).then(x => x.data)
+      }
+
+       /* 获取子级区域 */
+       async listChildAreas(code:string): Promise<any> {
+            return http.get(`${this.baseURL}/childcity/${code}`).then(x => x.data)
+      }
+
       /* 获取所有省份和直辖市 */
       async fetchProvinces(): Promise<any> {
             return http.get(`${this.baseURL}/provinces`).then(x => x.data)
@@ -43,6 +53,7 @@ class CommonService {
             return http.post(`${this.baseURL}/login`,obj)
       }
       
+
       
 
 }

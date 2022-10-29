@@ -1,7 +1,6 @@
 @import "./base.css";
 @import "./form.css";
 @import "./list.css";
-/*@import "./modalForm.css"; */
 
 
 
@@ -21,7 +20,7 @@ a,.green {
   transition: 0.4s;
 }
 a:hover {
-  background-color:yellow;
+  background-color:#f5f5f0;
   color:black;
 }
 

@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CustomerMain from '../components/customer/Customer.vue'
 import CustomerAdd from '../components/customer/CustomerAdd.vue'
-import CustomerList from "../components/customer/customerList.vue"
 import HospitalMain from "../components/hospital/Hospital.vue"
 import LoginForm from "../components/user/Login.vue"
+import LogWriter from "../components/businesslog/Mylogs.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,6 +14,11 @@ const router = createRouter({
       component: HomeView
     },
 
+    {
+      path: '/businesslog',
+      name: 'log',
+      component: LogWriter
+    },
     {
       path: '/login',
       name: 'login',
@@ -29,10 +34,7 @@ const router = createRouter({
         path: 'new',
         component: CustomerAdd
       },
-      {
-        path: "list",
-        component: CustomerList
-      }
+     
 
       ]
     },
@@ -46,7 +48,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("AMSTOKEN")
-  console.log("beforeEach is calling")
+  //console.log("beforeEach is calling")
   if (to.name !== 'login' && !token) { // 无token，登录从服务器获取token
     next({  path: 'login'})
   } else { //有token

@@ -1,6 +1,11 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue","src/**/**/*.vue"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "src/**/**/*.vue"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "importHelpers": true,
@@ -11,10 +16,13 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "paths": {
-      "@/*": ["./src/*","./*"]
+      "@/*": [
+        "./src/*",
+        "./*"
+      ]
     }
   },
-
+  "defaultSeverity": "none",
   "references": [
     {
       "path": "./tsconfig.config.json"

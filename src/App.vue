@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { RouterLink, RouterView } from 'vue-router'
+import { onMounted, ref } from 'vue';
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 
 const searchText = ""
+const usr=ref()
+onMounted(() => {
+  
+  // if(localStorage.getItem("userId")){
+  //      usr.value=localStorage.getItem("userId")
+  //   }
+  console.log("App is mounted")
+    
+})
 </script>
 
 <template>
@@ -12,11 +21,12 @@ const searchText = ""
     <div>
       <img src="./assets/images/ams.png" style="height:1.5em;" />
     </div>
+
     <div>
-      <input type="text" name="searchText" :placeholder="searchText" />
-    </div>
-    <div>
-      <RouterLink to="/">用户</RouterLink>
+      <RouterLink to="/">
+         <span v-if="usr">{{usr.Name}}</span>
+        
+      </RouterLink>
     </div>
   </header>
    <div class="content">
@@ -44,10 +54,10 @@ const searchText = ""
           </span>
           <span class="menuCat">CRM</span>
           <span>
-            <hr />
+            <hr/>
           </span>
         </div>
-
+        <RouterLink to="/businesslog">写日志</RouterLink>
         <RouterLink to="/customer">客户信息</RouterLink>
         <RouterLink to="/hospital">医院信息</RouterLink>
         <RouterLink to="/">数据看板</RouterLink>
@@ -81,10 +91,9 @@ header {
 }
 
 .main {
-  display: flex;
-  flex-flow: column nowrap;
+  display: flex;flex-flow: column nowrap;
   width: 100%;
-  height: calc(100% - 3.2em);
+  height: calc(100% - 0.5em);
 
 
 }
@@ -107,7 +116,7 @@ header {
 
 .rightColumn {
   width: 100%;
-  border: solid 2px red;
+  /* border: solid 2px red; */
 }
 
 
@@ -121,10 +130,14 @@ header {
 
 }
 
-.leftColumn a {
-  color: white;
+.leftColumn a:hover {
+  background-color: #ffff80;
+  color: black;
 }
-
+.leftColumn a {
+ 
+  color:white;
+}
 .menuHeader {
   height: 1em;
   width: 100%;

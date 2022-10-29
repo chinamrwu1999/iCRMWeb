@@ -60,7 +60,7 @@
 }
 
 html,body {
-  height:calc(100% - 1em);width:calc(100% - 1em);
+  height:calc(100% - 0.5em);width:calc(100% - 0.5em);
   color: var(--color-text);
   background: var(--color-background);
   transition: color 0.5s, background-color 0.5s;
