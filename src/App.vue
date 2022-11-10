@@ -60,7 +60,8 @@ onMounted(() => {
         <RouterLink to="/businesslog">写日志</RouterLink>
         <RouterLink to="/customer">客户信息</RouterLink>
         <RouterLink to="/hospital">医院信息</RouterLink>
-        <RouterLink to="/">数据看板</RouterLink>
+        <RouterLink to="/saleEstimate">销售预估</RouterLink>
+        <RouterLink to="/databoard">数据看板</RouterLink>
         <RouterLink to="/">基础数据</RouterLink>
 
       </div>

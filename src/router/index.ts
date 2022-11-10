@@ -5,6 +5,9 @@ import CustomerAdd from '../components/customer/CustomerAdd.vue'
 import HospitalMain from "../components/hospital/Hospital.vue"
 import LoginForm from "../components/user/Login.vue"
 import LogWriter from "../components/businesslog/Mylogs.vue"
+import NewEstimate from "../components/saleEstimation/NewEstimate.vue"
+import DataBoard from "../components/visulization/DataBoard.vue"
+import EstimateTable from "../components/visulization/EstimateTable.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -42,7 +45,25 @@ const router = createRouter({
       path: '/hospital',
       name: 'hospital',
       component: HospitalMain,
-    }
+    },
+    {
+      path: '/saleEstimate',
+      name: 'estimate',
+      component: NewEstimate,
+    },
+    {
+      path: '/databoard',
+      name: 'dataview',
+      component: DataBoard,
+      children: [
+        {
+          path:'/estimateView',
+          component: EstimateTable
+        }
+          
+      ]
+    },
+
   ]
 })
 

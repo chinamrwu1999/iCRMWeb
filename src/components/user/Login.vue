@@ -3,7 +3,7 @@ import service from "../../services/CommonService"
 import router from "../../router"
 
 var model = {
-    UserId: '15010183',
+    UserId: '15010001',
     Password: '123456'
 }
 
@@ -22,7 +22,7 @@ function submit() {
     }
     ).then(x =>{
          if(x?.ID){
-            localStorage.setItem("userId",x)
+            localStorage.setItem("userId",JSON.stringify(x))
             router.push("/")
          }
         })
