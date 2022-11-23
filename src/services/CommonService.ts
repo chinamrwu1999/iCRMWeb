@@ -59,6 +59,9 @@ class CommonService {
       }
 
 
+      TestIt(){
+            console.log("Hello")
+      }
 
 
 }

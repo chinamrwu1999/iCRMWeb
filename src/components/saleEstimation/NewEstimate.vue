@@ -1,9 +1,9 @@
 <script setup lang="ts">
 // @ts-nocheck
-import { onMounted, ref, onBeforeMount } from "vue"
+import { onMounted, ref } from "vue"
 import HospitalService from "../hospital/HospitalService"
 import CommonService from "../../services/CommonService.ts"
-import service from "./EstimateService"
+import service from "./EstimateService.ts"
 
 
 
@@ -205,25 +205,38 @@ function saveData() {
 /************************************************************** */
 function changeProduct(event: any) {
     let value = event.target.value;
-    products.value.forEach(e => {
+    this.products.forEach(e => {
         if (e.ProductId === value) {
+           
+            let row=event.target.parentNode.parentNode
+            let node=row.querySelector(".hostProxy > .hospitalName")
+            let customerId=parseInt(node.getAttribute("data-value"))
+           
+       
             let inputs = event.target.parentNode.parentNode.querySelectorAll(".quaterInput")
             inputs.forEach(el => {
                 let e0 = el.lastElementChild as HTMLInputElement
                 e0.value = e.BasePrice
-
-                //  let e1=el.firstElementChild as HTMLInputElement
-                //  e1.value=null
+            })
+            SumRow(event.target.parentNode.parentNode)
+            service.HistoryEstimates(customerId,value,this.year).then(res => {
+                // console.log(res)
+                if(res?.length>0){
+                   res.forEach(d0 => {
+                       let element0=row.querySelector(`.quaterInput > input[name=input${d0.Month}]`) 
+                       let element1=row.querySelector(`.quaterInput > input[name=price${d0.Month}]`)
+                       element0.value=d0.Amount;
+                       element1.value=d0.Price
+                       
+                   })
+                }
+            }).then( () => {
+                SumRow(event.target.parentNode.parentNode)
             })
 
-            SumRow(event.target.parentNode.parentNode)
-
-
-
+           
         }
     });
-
-
 }
 
 function SumRow(row: HTMLDivElement) {
@@ -406,7 +419,7 @@ function inputBlur(event: any) {
                 <span class="index">序号</span>
                 <span class="province">省市</span>
 
-                <span style="width:45em;">医院名称/代理商</span>
+                <span class="hostProxy" style="height:2.5em;line-height:2.5em;">医院名称/代理商</span>
                 <span class="products">产品</span>
                 <div class="quarters">
                     <div class="quarter">
@@ -513,28 +526,28 @@ function inputBlur(event: any) {
                         <input type="number" name="price6" placeholder="价格" @blur="inputBlur($event)" />
                     </div>
                     <div class="quaterInput">
-                        <input type="number" name="input7" placeholder="预估量" />
-                        <input type="number" name="price7" placeholder="价格" />
+                        <input type="number" name="input7" placeholder="预估量" @blur="inputBlur($event)" />
+                        <input type="number" name="price7" placeholder="价格" @blur="inputBlur($event)" />
                     </div>
                     <div class="quaterInput">
-                        <input type="number" name="input8" placeholder="预估量" />
-                        <input type="number" name="price8" placeholder="价格" />
+                        <input type="number" name="input8" placeholder="预估量" @blur="inputBlur($event)" />
+                        <input type="number" name="price8" placeholder="价格" @blur="inputBlur($event)" />
                     </div>
                     <div class="quaterInput">
-                        <input type="number" name="input9" placeholder="预估量" />
-                        <input type="number" name="price9" placeholder="价格" />
+                        <input type="number" name="input9" placeholder="预估量" @blur="inputBlur($event)" />
+                        <input type="number" name="price9" placeholder="价格" @blur="inputBlur($event)" />
                     </div>
                     <div class="quaterInput">
-                        <input type="number" name="input10" placeholder="预估量" />
-                        <input type="number" name="price10" placeholder="价格" />
+                        <input type="number" name="input10" placeholder="预估量" @blur="inputBlur($event)" />
+                        <input type="number" name="price10" placeholder="价格" @blur="inputBlur($event)" />
                     </div>
                     <div class="quaterInput">
-                        <input type="number" name="input11" placeholder="预估量" />
-                        <input type="number" name="price11" placeholder="价格" />
+                        <input type="number" name="input11" placeholder="预估量" @blur="inputBlur($event)" />
+                        <input type="number" name="price11" placeholder="价格" @blur="inputBlur($event)" />
                     </div>
                     <div class="quaterInput">
-                        <input type="number" name="input12" placeholder="预估量" />
-                        <input type="number" name="price12" placeholder="价格" />
+                        <input type="number" name="input12" placeholder="预估量" @blur="inputBlur($event)" />
+                        <input type="number" name="price12" placeholder="价格" @blur="inputBlur($event)" />
                     </div>
                     <div class="sum">
                         <span class="sumSale"></span>

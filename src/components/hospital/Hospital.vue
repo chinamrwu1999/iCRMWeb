@@ -155,8 +155,8 @@ function getChildAreas(event: any) {
           <template v-if="pageData?.rows?.length > 0">
                <div class="header">
                     <span class="index">序号</span>
-                    <span class="name">医院名称</span>
                     <span class="province">省市</span>
+                    <span class="name">医院名称</span>
                     <span class="ctype">类型</span>
                     <span class="grade">等级</span>
 
@@ -166,8 +166,8 @@ function getChildAreas(event: any) {
                <div class="body">
                     <div class="row" v-for="item, index in pageData.rows">
                          <span class="index">{{ pageData.startIndex + index + 1 }}</span>
-                         <span class="name">{{ item.Name }}</span>
                          <span class="province">{{ item.Province }}{{ item.City }}</span>
+                         <span class="name">{{ item.Name }}</span>
                          <span class="ctype">{{ item.HType }}</span>
                          <span class="grade">{{ item.Grade }}</span>
 
@@ -253,7 +253,9 @@ header {
 }
 
 .name {
-     width: 35%;
+     width: 40%;
+     padding-right:1em;
+     padding-left:1em;
 }
 
 
@@ -267,7 +269,7 @@ header {
 }
 
 .province {
-     width: 20%;
+     width: 12em;
 }
 
 .buttons {

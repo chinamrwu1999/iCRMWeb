@@ -7,7 +7,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   build:{
-    outDir:"E:/projects/golang/iCRM/html"
+    outDir:"C:/Tools/nginx-1.20.2/html/iCRM"
   },
   resolve: {
     alias: {
