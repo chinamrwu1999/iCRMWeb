@@ -8,6 +8,8 @@ import LogWriter from "../components/businesslog/Mylogs.vue"
 import NewEstimate from "../components/saleEstimation/NewEstimate.vue"
 import DataBoard from "../components/visulization/DataBoard.vue"
 import EstimateTable from "../components/visulization/EstimateTable.vue"
+import Explorer from "../components/visulization/Explorer.vue"
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -57,12 +59,19 @@ const router = createRouter({
       component: DataBoard,
       children: [
         {
-          path:'/estimateView',
+          name:'estimateView',
+          path:'estimateView',
           component: EstimateTable
         }
           
       ]
     },
+
+    {
+      path : '/testIt',
+      name:'test',
+      component: Explorer
+    }
 
   ]
 })

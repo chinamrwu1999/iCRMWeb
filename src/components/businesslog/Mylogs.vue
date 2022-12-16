@@ -1,11 +1,31 @@
 <script setup lang="ts">
+  import { ref } from 'vue';
+  import NewLog from './NewLogs.vue'
+  const childWindow = ref('')
+  function ShowNewWindow(){
+         childWindow.value="new"
+  }
 
+  function closeChild() {
+     childWindow.value = ''
+}
 </script>
 <template>
   <div class="main1">
-      <header>工作日志</header>
-      
+      <header>
+          <span></span>
+          <span>工作日志</span>
+          <span><button @click="ShowNewWindow()">写日志</button></span>
+          
+     </header>
+     <div class="list">
+
+     </div>
+    
   </div>
+  <Teleport to=".list" v-if="childWindow == 'new'">
+          <NewLog  @closeChild="closeChild()" />
+     </Teleport> 
 </template>
 
 <style scoped>

@@ -3,13 +3,14 @@
 import { onMounted, ref } from "vue"
 import service from "./HospitalService"
 import CommonService from "../../services/CommonService"
-import HospitalUpdater from "./HospitalUpdate.vue"
 import MyArea from "../commons/MyAreas.vue"
 
 const search = {
      Citys: '',
      Txt: ''
 }
+
+const emit = defineEmits(['closeChild', 'selectItem'])
 
 const errors = ref(null)
 const childWindow = ref('')
@@ -26,27 +27,27 @@ const pageData = ref({
 })
 const error = ref("")
 
-function changeMyArea(areaId){
-    // console.log(areaId)
-    if(areaId && areaId != ''){
-          search.Citys=areaId
-          service.queryHospitals(search).then( data => {
-               pageData.value=data
+function changeMyArea(areaId) {
+     // console.log(areaId)
+     if (areaId && areaId != '') {
+          search.Citys = areaId
+          service.queryHospitals(search).then(data => {
+               pageData.value = data
           })
-    }else{
-     service.MyHospitals().then(res => {
+     } else {
+          service.MyHospitals().then(res => {
                pageData.value = res
           }).catch(error => errors.value = error)
-    }
-    
-     
+     }
+
+
 }
 
 
 onMounted(() => {
      CommonService.listTopAreas().then(data => {
           topAreas.value = data
-     }).then( () => {
+     }).then(() => {
           service.MyHospitals().then(res => {
                pageData.value = res
           }).catch(error => errors.value = error)
@@ -57,12 +58,10 @@ onMounted(() => {
 /***************************************** */
 
 
-function showEdit(hospitalId: number) {
-     selected.value = hospitalId
-     childWindow.value = 'update'
-}
+
 function closeChild() {
-     childWindow.value = ''
+     console.log("HELLO")
+     emit('closeChild')
 }
 
 function getPageData(index: number) {
@@ -82,55 +81,34 @@ function LikeName() {
      })
 }
 
+function sendData(item){
+     emit("selectItem",{id:item.ID,name:item.Name,city:item.City,province:item.Province})
+}
 /************************* 动态下拉框************************************ */
 
 const topAreas = ref(Array<any>())
-
 </script>
 <template>
-     <div class="main1">
-          <header>
-               
-               <!-- <div id="areas">
-                    <select name="myAreas" @change="getChildAreas($event)">
-                         <option value="">区域</option>
-                         <option :value="item.Code" v-for="item in topAreas">{{ item.Name }}</option>
-                    </select>
-               </div> -->
-               <MyArea @select-city="changeMyArea"></MyArea>
+     <div class="kt1">
+          <header class="header">
                <span>
                     <input type="text" v-model="search.Txt" />
                     <button @click="LikeName()">查询</button>
 
                </span>
-               <span></span>
-
+               <MyArea @select-city="changeMyArea"></MyArea>
+               <span><button @click="closeChild">关闭</button></span>
           </header>
-     </div>
-     <div class="list">
+
           <template v-if="pageData?.rows?.length > 0">
-               <div class="header">
-                    <span class="index">序号</span>
-                    <span class="province">省市</span>
-                    <span class="name">医院名称</span>
-                    <span class="ctype">类型</span>
-                    <span class="grade">等级</span>
+               <div class="hospitals">
+                    <div class="body">
+                         <div class="row" v-for="item, index in pageData.rows" @click="sendData(item)">
+                              <span class="index">{{ pageData.startIndex + index + 1 }}</span>
+                              <span class="province">{{ item.Province }}{{ item.City }}</span>
+                              <span class="name">{{ item.Name }}</span>
 
-
-
-               </div>
-               <div class="body">
-                    <div class="row" v-for="item, index in pageData.rows">
-                         <span class="index">{{ pageData.startIndex + index + 1 }}</span>
-                         <span class="province">{{ item.Province }}{{ item.City }}</span>
-                         <span class="name">{{ item.Name }}</span>
-                         <span class="ctype">{{ item.HType }}</span>
-                         <span class="grade">{{ item.Grade }}</span>
-
-                         <span class="buttons">
-                              <button @click="showEdit(item.ID)">编辑</button>
-                              <button>详细</button>
-                         </span>
+                         </div>
                     </div>
                </div>
                <div class="footer">
@@ -145,13 +123,13 @@ const topAreas = ref(Array<any>())
                     </span>
                     <span>
                          共有
-                         <b style="padding-left: 1em;padding-right:1em;color:red">
+                         <b style="padding-left: 1em;padding-right:1em;color:blue">
                               {{ pageData.totalRows }}
                          </b>行记录
-                         <b style="padding-left: 1em;padding-right:1em;color:red">
+                         <b style="padding-left: 1em;padding-right:1em;color:blue">
                               {{ pageData.totalPages }}
                          </b>页,当前是第
-                         <b style="padding-left: 1em;padding-right:1em;color:red">
+                         <b style="padding-left: 1em;padding-right:1em;color:blue">
                               {{ pageData.page + 1 }}
                          </b>页
                     </span>
@@ -177,58 +155,98 @@ const topAreas = ref(Array<any>())
                </div>
           </template>
      </div>
-     <Teleport to=".list" v-if="childWindow == 'update'">
-          <HospitalUpdater :hospital-id="selected" @close-window="closeChild()" />
-     </Teleport>
+
+
+
+
 </template>
 <style scoped>
-.main1 {
-     width: 100%;
-     height: 3em;
-     padding: 0.2em;
-     display: flex;
-     flex-flow: column nowrap;
-     border-top: solid 1px #141e30;
+.kt1 {
+     max-width: 80em;
+
+     background-color: white;
+     border: solid 1px #c9a889;
+     border-radius: 0.2em;
+     z-index: 100;
 }
 
-header {
+.header {
      height: 2.5em;
      width: 100%;
      display: flex;
      flex-flow: row nowrap;
      align-items: center;
      justify-content: space-between;
-
+     /* background-color: #b95313; */
+     background-color: #c9a889;
      padding-left: 1em;
      padding-right: 1em;
+}
+
+.hospitals {
+     width: 100%;
+   
+     display: flex;
+     flex-flow: column nowrap;
+
+     padding-top: 1em;
+     
+
+}
+
+.body {
+     width: 100%;
+     height: 41em;
+     display: flex;
+     flex-flow: column nowrap;
+    
+
+}
+
+.row {
+     
+     height: 2em;
+     width: 100%;
+     display: flex;
+     flex-flow: row nowrap;
+     align-items: center;
+     color: black;
+     border-bottom: solid 1px #dfb274;
+     padding-left: 1em;
+     padding-right: 1em;
+}
+
+.row:nth-child(3n){
+     background-color: #e8e7e3;
+}
+
+.footer {
+     height: 2.5em;
+     width: 100%;
+     background-color: #b78a57;
+     display: flex;
+     flex-flow: row nowrap;
+     align-items: center;
+     justify-content: space-between;
+     color:black;
 
 }
 
 .index {
      width: 3em;
+     text-align: center;
+     padding-right: 0.6em;
 }
 
 .name {
-     width: 40%;
-     padding-right:1em;
-     padding-left:1em;
+     width: calc(100% - 24em);
+     padding-right: 1em;
+     padding-left: 1em;
 }
 
 
-.ctype {
-     width: 8em;
-}
-
-
-.grade {
-     width: 4em;
-}
 
 .province {
-     width: 12em;
-}
-
-.buttons {
-     text-align: right;
+     width: 20em;
 }
 </style>

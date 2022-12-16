@@ -5,6 +5,7 @@ import { onMounted, ref } from "vue"
 import service from "./CustomerService"
 import CommonService from "../../services/CommonService"
 import CustomerUpdater from "./CustomerUpdate.vue"
+import MyArea from "../commons/MyAreas.vue"
 const router = useRouter()
 const search = {
      Citys: '',
@@ -26,6 +27,21 @@ const pageData = ref({
 })
 const error = ref("")
 
+function changeMyArea(areaId){
+    // console.log(areaId)
+    if(areaId && areaId != ''){
+          search.Citys=areaId
+          service.queryCustomers(search).then( data => {
+               pageData.value=data
+          })
+    }else{
+     service.MyCustomers().then(res => {
+               pageData.value = res
+          }).catch(error => errors.value = error)
+    }
+    
+     
+}
 
 
 onMounted(() => {
@@ -71,66 +87,6 @@ function LikeName() {
 
 const topAreas = ref(Array<any>())
 
-function getChildAreas(event: any) {
-
-     let value = event.target.value
-     let target = event.target as HTMLElement
-     let sibling = target.nextSibling;
-     while (sibling) {
-          target.parentNode?.removeChild(sibling)
-          sibling = target.nextSibling;
-     }
-
-     if (value && value != '') {
-          CommonService.listChildAreas(value).then(res => {
-               if (res?.length > 0) {
-                  //  console.log(res)
-
-                    let select = document.createElement("select");
-
-                    let option = document.createElement("option");
-                         option.innerText ='请选择'
-                         option.setAttribute("value",'')
-                         select.append(option);
-
-                    res.forEach(el => {
-                        let option = document.createElement("option");
-                         option.innerText = el.Name
-                         option.setAttribute("value", el.Code)
-                         select.append(option);
-                    });
-                    select.addEventListener("change", getChildAreas)
-                    target.parentNode.appendChild(select)
-                    
-               }                
-               search.Citys=value
-                    service.queryCustomers(search).then( data => {
-                      pageData.value=data
-
-               })
-
-          })
-     }else{
-          let preSibling = target.previousSibling as HTMLSelectElement || null
-          if(preSibling !=null){
-               search.Citys=  preSibling.value
-               service.queryCustomers(search).then( data => {
-                      pageData.value=data
-
-               })
-
-          }else{
-               service.MyCustomers().then( data => {
-                      pageData.value=data
-
-               })
-          }
-     }
-
-
-
-
-}
 
 </script>
 <template>
@@ -138,12 +94,7 @@ function getChildAreas(event: any) {
          
           <header>
                
-               <div class="topArea" id="areas">
-                    <select name="myAreas" @change="getChildAreas($event)">
-                         <option value="">区域</option>
-                         <option :value="item.Code" v-for="item in topAreas">{{ item.Name }}</option>
-                    </select>
-               </div>
+               <MyArea @select-city="changeMyArea"></MyArea>
                <span>
                     <input type="text" v-model="search.Txt" />
                     <button @click="LikeName()">查询</button>
@@ -156,36 +107,7 @@ function getChildAreas(event: any) {
           </header>
 
 
-          <!-- <header>
-
-               <button @click="TestMe()">测试</button>
-               <div>
-                    <select name="markets" @change="changeMarket($event)">
-                         <option value="">大区</option>
-                         <option :value="item.AreaId" v-for="item in markets">{{item.Name}}</option>
-                    </select>
-                    <template v-if="provinces?.length>0">
-                         <select name="area" @change="changeProvince($event)">
-                              <option value="">省市</option>
-                              <option :value="item.Code" v-for="item in provinces">{{item.Name}}</option>
-                         </select>
-                         <template v-if="citys?.length>0">
-                              <select name="area" @change="changeCity($event)">
-                                   <option value="">市/区</option>
-                                   <option :value="item.Code" v-for="item in citys">{{item.Name}}</option>
-                              </select>
-                         </template>
-                    </template>
-                    <input type="text" v-model="search.Txt" />
-                    <button @click="LikeName()">查询</button>
-               </div>
-               <span>
-                    <button @click="AddHospital()">添加医院</button>
-               </span>
-          </header> -->
-          <!-- div class="content">
-            <RouterView />
-        </div -->
+       
 
      </div>
      <div class="list">
@@ -209,7 +131,7 @@ function getChildAreas(event: any) {
                     <div class="row" v-for="item,index in pageData.rows">
                          <span class="index">{{pageData.startIndex+index+1}}</span>
                        
-                         <span class="name">{{item.FullName}}</span>
+                         <span class="name">{{item.Name}}</span>
                          <span class="shortName">{{item.ShortName}}</span>
                          <span class="ctype">{{item.CType}}</span>
                          <span class="scale">{{item.Scale}}</span>
