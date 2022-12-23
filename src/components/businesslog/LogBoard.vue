@@ -1,10 +1,24 @@
 <script setup lang="ts">
 // @ts-nocheck
+import HospitalList from "../hospital/HospitalList.vue"
+import ProxyList from "../proxy/ProxyList.vue"
+import SalesPersonList from "../commons/EmployeeList.vue"
+import service from "./BusinessLogService"
 
-import { onMounted } from 'vue';
-import service from "./BusinessLogService" 
-import {ref} from "vue"
-const props = defineProps(['employee'])
+import { onMounted, ref } from "vue"
+
+
+// const emit = defineEmits(['closeChild'])
+
+
+
+
+const search = {
+    date1: '',
+    date2: '',
+    id: '',
+    target:''
+}
 const model = ref({
      pageSize: 0,
      page: 0,
@@ -16,29 +30,105 @@ const model = ref({
 
 })
 
-function fetchData(){
-    let obj={
-        employeeId:props.employee
-    }
-  
 
-    service.queryEmployeeLogs(obj).then( x => {
-        console.log(x)
-        model.value=x
-    })
+const child = ref('')
+/********************************************** */
+function openChild(name: string) {
+    child.value = name
+    model.value={
+     pageSize: 0,
+     page: 0,
+     startIndex: 0,
+     totalRows: 0,
+     totalPages: 0,
+     rows: Array<any>(),
+     sort: ''
+
+}
+}
+function closeChild() {
+    child.value = 'someone'
+    console.log(search)
 }
 
-onMounted(() => {
-     fetchData()
+function ByEmployee(obj) {
+    console.log(obj)
+    let input = document.getElementById("inputName")
+    input.value = obj.name
+    search.id = obj.id
+    search.target='employeeId'
+
+    searchData()
+
+}
+
+function ByHospital(obj) {
+    console.log(obj)
+    let input = document.getElementById("inputName")
+    input.value = obj.name
+    search.id = obj.id
+    search.target='hospitalId'
+    searchData()
+}
+
+function ByProxy(obj) {
+    console.log(obj)
+    let input = document.getElementById("inputName")
+    input.value = obj.name
+    search.id = obj.id
+    search.target='proxyId'
+    searchData()
+
+}
+
+function searchData(){
+   service.queryLogs(search).then(x => {
+      console.log(x)
+      model.value=x;
+   })
+}
+
+
+
+onMounted( () => {
+     let d0=new Date(Date.now())
+         d0.setDate(d0.getDate()-10)
+     console.log(d0)
+     search.date1=`${d0.getFullYear()}-${d0.getMonth()+1}-${d0.getDate()}`
+     d0=new Date(Date.now())
+     console.log(d0)
+     search.date2=`${d0.getFullYear()}-${d0.getMonth()+1}-${d0.getDate()}`
    
-}
-     
-)
+     console.log(search)
+     searchData()
+
+})
 const errors = ref("")
 </script>
 <template>
-     <div class="kt1">
-                  <template v-if="model?.rows?.length > 0">
+    <div class="main1">
+        <header>
+            <span>浏览日志</span>
+        </header>
+        <div class="filter">
+            <span></span>
+            <div class="dates">
+                <span>From</span><input type="date" v-model="search.date1" />
+                <span>To</span><input type="date" v-model="search.date2" />
+            </div>
+            <div class="buttons">
+                <input type="text" v-model="search.Txt" class="inputName" id="inputName" />
+                <button @click="openChild('employee')">选择员工</button>
+                <button @click="openChild('hospital')">选择医院</button>
+                <button @click="openChild('proxy1')">选代理商</button>
+            </div>
+            <span><button @click="submit">确定</button></span>
+            <span></span>
+        </div>
+        <div class="popup"></div>
+        
+        <div class="kt1">
+              <template v-if="model?.rows?.length > 0">
                <div class="hospitals">
                     <div class="header">
                         <span class="index">序号</span>
@@ -120,11 +210,81 @@ const errors = ref("")
           </template>
      </div>
 
+    </div>
 
+    <Teleport to=".popup" v-if="child == 'hospital'">
+        <HospitalList @closeChild="closeChild" @selectItem="ByHospital" />
+    </Teleport>
 
+    <Teleport to=".popup" v-if="child == 'employee'">
+        <SalesPersonList @closeChild="closeChild" @selectItem="ByEmployee" />
+    </Teleport>
+    <Teleport to=".popup" v-if="child == 'proxy1'">
+        <ProxyList @closeChild="closeChild" @selectItem="ByProxy" />
+    </Teleport>
 
 </template>
 <style scoped>
+.main1 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+header {
+    height: 2.5em;
+    width: 100%;
+    font-size: 19px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.dates {
+    height: 2.5em;
+}
+
+.dates>span {
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+}
+
+.filter {
+    height: 2.5em;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: solid 1px black;
+}
+
+.buttons {
+    width: 45%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inputName {
+    width: 22em;
+    outline: none;
+    border: none;
+}
+
+.popup {
+    width: 100%;
+    height: 0.1em;
+    border: none;
+    padding-left: 2em;
+}
+
+
+/*********************************************************************************************** */
 .kt1 {
     width:100%;height:100%;
 
@@ -217,4 +377,6 @@ const errors = ref("")
      width: 50%;
      padding-top:0.5em;padding-right:0.5em;padding-left:0.5em;
 }
+
+
 </style>

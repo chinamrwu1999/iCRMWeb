@@ -57,7 +57,8 @@ onMounted(() => {
             <hr/>
           </span>
         </div>
-        <RouterLink to="/businesslog">写日志</RouterLink>
+        <RouterLink to="/businesslog">我的日志</RouterLink>
+        <RouterLink to="/logBoard">查看日志</RouterLink>
         <RouterLink to="/customer">客户信息</RouterLink>
         <RouterLink to="/hospital">医院信息</RouterLink>
         <RouterLink to="/saleEstimate">销售预估</RouterLink>

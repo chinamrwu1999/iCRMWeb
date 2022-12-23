@@ -9,6 +9,7 @@ import NewEstimate from "../components/saleEstimation/NewEstimate.vue"
 import DataBoard from "../components/visulization/DataBoard.vue"
 import EstimateTable from "../components/visulization/EstimateTable.vue"
 import Explorer from "../components/visulization/Explorer.vue"
+ import LogBoard from "../components/businesslog/LogBoard.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,7 +67,11 @@ const router = createRouter({
           
       ]
     },
-
+    {
+      path : '/logBoard',
+      name:'logBoard',
+      component: LogBoard
+    },
     {
       path : '/testIt',
       name:'test',

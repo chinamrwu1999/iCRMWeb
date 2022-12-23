@@ -58,7 +58,14 @@ class CommonService {
             return http.post(`${this.baseURL}/login`, obj)
       }
 
-
+      getUserId() {
+            let user=JSON.parse(localStorage.getItem("userId"))
+            console.log(user)
+            return(user.ID)
+      }
+      getUser(){
+          return JSON.parse(localStorage.getItem("userId"))  
+      }
       TestIt(){
             console.log("Hello")
       }
